@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -17,13 +18,13 @@ import javax.swing.JFrame;
 public class Sorting {
 
     /** Increment to sweep the sort. */
-    private static final int SORT_INCREMENT = 10000;
+    private static final int SORT_INCREMENT = 500;
 
     /** Total number of values to try. */
-    private static final int TOTAL_SORT_VALUES = 100;
+    private static final int TOTAL_SORT_VALUES = 1000;
 
     /** Total data size. */
-    private static final int TOTAL_INTEGER_VALUES = 1000000;
+    private static final int TOTAL_INTEGER_VALUES = 500000;
 
     /**
      * Bubble sort.
@@ -33,7 +34,23 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] bubbleSort(final int[] array) {
-        return null;
+        boolean sorted;
+        do {
+            sorted = true;
+            for (int i = 0; i <= array.length - 2; i++) {
+                if (array[i] > array[i + 1]) {
+                    sorted = false;
+                    swap(array, i, i + 1);
+                }
+            }
+        } while (!sorted);
+        return array;
+    }
+
+    private static void swap(final int[] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
     }
 
     /**
@@ -44,7 +61,18 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] selectionSort(final int[] array) {
-        return null;
+        for (int unsortedLeft = 0; unsortedLeft < array.length; unsortedLeft++) {
+            int indexOfMin = unsortedLeft;
+            int min = array[unsortedLeft];
+            for (int index = unsortedLeft; index < array.length; index++) {
+                if (array[index] < min) {
+                    indexOfMin = index;
+                    min = array[index];
+                }
+            }
+            swap(array, unsortedLeft, indexOfMin);
+        }
+        return array;
     }
 
     /**
@@ -55,7 +83,13 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] mergeSort(final int[] array) {
-        return null;
+        if (array.length <= 1) {
+            return array;
+        }
+
+        int mid = array.length / 2;
+        return merge(mergeSort(Arrays.copyOfRange(array, 0, mid)),
+                        mergeSort(Arrays.copyOfRange(array, mid, array.length)));
     }
 
     /**
